@@ -684,6 +684,32 @@
 
     <div class="section-divider"></div>
 
+    {{-- ── Features ── --}}
+    <section class="features-section">
+        <div class="section-label">Come funziona</div>
+        <h2 class="section-title">Come funziona <span>UDebate</span></h2>
+
+        <div class="features-grid">
+            <div class="feature-card fade-up">
+                <div class="feature-icon" style="background:rgba(232,255,71,.1);">🎯</div>
+                <div class="feature-title">Pubblica la tua tesi</div>
+                <p class="feature-desc">Esprimi la tua posizione in modo chiaro e diretto. Argomenta il tuo punto di vista e sfida la community a contrastarti.</p>
+            </div>
+            <div class="feature-card fade-up" style="transition-delay:.1s">
+                <div class="feature-icon" style="background:rgba(61,139,255,.1);">⚖️</div>
+                <div class="feature-title">Confrontati in tempo reale</div>
+                <p class="feature-desc">Rispondi alle argomentazioni degli altri, costruisci catene di ragionamento e porta prove a supporto della tua posizione.</p>
+            </div>
+            <div class="feature-card fade-up" style="transition-delay:.2s">
+                <div class="feature-icon" style="background:rgba(255,71,87,.1);">🗳️</div>
+                <div class="feature-title">Vota e decidi</div>
+                <p class="feature-desc">La community vota la posizione più convincente. I voti pesano sulla reputazione: chi argomenta meglio sale in classifica.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
     {{-- ── Feed Mockup ── --}}
     <section class="mockup-section">
         <div style="position:relative;z-index:1;">
@@ -837,32 +863,6 @@
                         @endguest
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    {{-- ── Features ── --}}
-    <section class="features-section">
-        <div class="section-label">Come funziona</div>
-        <h2 class="section-title">Come funziona <span>UDebate</span></h2>
-
-        <div class="features-grid">
-            <div class="feature-card fade-up">
-                <div class="feature-icon" style="background:rgba(232,255,71,.1);">🎯</div>
-                <div class="feature-title">Pubblica la tua tesi</div>
-                <p class="feature-desc">Esprimi la tua posizione in modo chiaro e diretto. Argomenta il tuo punto di vista e sfida la community a contrastarti.</p>
-            </div>
-            <div class="feature-card fade-up" style="transition-delay:.1s">
-                <div class="feature-icon" style="background:rgba(61,139,255,.1);">⚖️</div>
-                <div class="feature-title">Confrontati in tempo reale</div>
-                <p class="feature-desc">Rispondi alle argomentazioni degli altri, costruisci catene di ragionamento e porta prove a supporto della tua posizione.</p>
-            </div>
-            <div class="feature-card fade-up" style="transition-delay:.2s">
-                <div class="feature-icon" style="background:rgba(255,71,87,.1);">🗳️</div>
-                <div class="feature-title">Vota e decidi</div>
-                <p class="feature-desc">La community vota la posizione più convincente. I voti pesano sulla reputazione: chi argomenta meglio sale in classifica.</p>
             </div>
         </div>
     </section>
