@@ -1,0 +1,18 @@
+
+SET UP -> Win Powershell/Git Bash
+
+1. Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process (SOLO SU PWSD)
+
+2. npm install
+
+3. npm run build 
+
+4. cp .env.example .env (basato su .env.example standard di laravel)
+
+5. docker compose up -d
+
+6. docker compose exec app composer install
+
+7. docker compose exec app php artisan key:generate
+
+8. docker compose exec app php artisan migrate
