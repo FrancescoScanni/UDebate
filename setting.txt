@@ -16,3 +16,5 @@ SET UP -> Win Powershell/Git Bash
 7. docker compose exec app php artisan key:generate
 
 8. docker compose exec app php artisan migrate
+
+9. Vai su docker e localhost:8080
