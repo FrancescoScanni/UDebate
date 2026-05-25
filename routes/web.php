@@ -3,6 +3,7 @@ use App\Http\Controllers\DebateController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\ModeratorController;
 
 Route::view('/', 'welcome');
 
@@ -26,6 +27,11 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+
+
+Route::get('/moderator', [ModeratorController::class, 'index'])
+    ->middleware(['auth', 'moderator'])
+    ->name('moderator.dashboard');
     
 
 require __DIR__.'/auth.php';
