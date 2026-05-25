@@ -152,7 +152,7 @@ UDebate/
 
 ---
 
-## 👤 Autore
+## 👤 Autori
 
 **Francesco Scanni**
 
