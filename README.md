@@ -1,58 +1,177 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# ⚖️ UDebate
 
-## About Laravel
+**Piattaforma di dibattito**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+[![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?style=flat-square&logo=php&logoColor=white)](https://php.net)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![Alpine.js](https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=flat-square&logo=alpine.js&logoColor=white)](https://alpinejs.dev)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+![UDebate Banner](banner.png)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+</div>
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📖 Cos'è UDebate
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+UDebate è una piattaforma web per il dibattito universitario. Gli utenti possono aprire tesi, rispondere a quelle degli altri, esprimere like e monitorare la propria attività tramite una dashboard personale in tempo reale.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## ✨ Funzionalità
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+| Feature | Descrizione |
+|---|---|
+| 🔐 **Autenticazione** | Registrazione, login e verifica email |
+| 💬 **Dibattiti** | Apertura, modifica ed eliminazione tesi |
+| ❤️ **Like** | Toggle like/unlike senza ricaricare la pagina (AJAX) |
+| ↩️ **Commenti** | Risposte in tempo reale via AJAX |
+| 📊 **Dashboard** | Statistiche personali: dibattiti aperti, like ricevuti, risposte |
+| 🔥 **Trending** | Lista dei topic più discussi in sidebar |
+| ⚡ **Sfida del giorno** | Quesito quotidiano con votazione Sì/No |
+
+---
+
+## 🛠️ Stack tecnologico
+
+- **Backend** — Laravel 13, PHP 8.3
+- **Frontend** — Blade, Tailwind CSS, Alpine.js
+- **Database** — MySQL
+- **Build tool** — Vite
+- **Containerizzazione** — Docker & Docker Compose
+
+---
+
+## 🚀 Installazione
+
+### Con Docker (consigliato)
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clona il repository
+git clone https://github.com/FrancescoScanni/UDebate.git
+cd UDebate
 
-php artisan boost:install
+# 2. Copia la configurazione
+cp .env.example .env
+
+# 3. Avvia i container
+docker compose up -d
+
+# 4. Installa le dipendenze PHP
+docker exec -it <container_name> composer install
+
+# 5. Genera la chiave applicativa
+docker exec -it <container_name> php artisan key:generate
+
+# 6. Esegui le migrazioni
+docker exec -it <container_name> php artisan migrate
+
+# 7. Compila gli asset
+npm install && npm run build
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+> L'app sarà disponibile su **http://localhost:8080**
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Installazione locale
 
-## Code of Conduct
+```bash
+git clone https://github.com/FrancescoScanni/UDebate.git
+cd UDebate
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+composer install
+cp .env.example .env
+php artisan key:generate
 
-## Security Vulnerabilities
+# Configura il database nel file .env, poi:
+php artisan migrate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+npm install && npm run build
+php artisan serve
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## ⚙️ Configurazione `.env`
+
+```env
+APP_NAME=UDebate
+APP_URL=http://localhost:8080
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=app (default di livewire)
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+---
+
+## 📁 Struttura del progetto
+
+```
+UDebate/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       ├── DebateController.php    # Dashboard + CRUD dibattiti
+│   │       ├── LikeController.php      # Toggle like (AJAX)
+│   │       └── CommentController.php   # Invio commenti (AJAX)
+│   └── Models/
+│       ├── Debate.php
+│       ├── Like.php
+│       └── Comment.php
+├── resources/
+│   └── views/
+│       └── dashboard.blade.php         # Vista principale
+├── routes/
+│   └── web.php
+├── database/
+│   └── migrations/
+├── docker-compose.yml
+└── README.md
+```
+
+---
+
+## 🔌 API Routes principali
+
+| Metodo | Route | Descrizione |
+|---|---|---|
+| `GET` | `/dashboard` | Dashboard principale |
+| `POST` | `/debates` | Crea nuovo dibattito |
+| `PATCH` | `/debates/{id}` | Modifica dibattito |
+| `DELETE` | `/debates/{id}` | Elimina dibattito |
+| `POST` | `/debates/{id}/like` | Toggle like |
+| `POST` | `/debates/{id}/comments` | Aggiungi commento |
+
+---
+
+## 👤 Autori
+
+**Francesco Scanni**
+
+[![GitHub](https://img.shields.io/badge/GitHub-FrancescoScanni-181717?style=flat-square&logo=github)](https://github.com/FrancescoScanni)
+
+**Alessandro Lorusso (IL GOAT)**
+
+[![GitHub](https://img.shields.io/badge/GitHub-flexmyedit-181717?style=flat-square&logo=github)](https://github.com/flexmyedit)
+
+**Andrea Massari**
+
+[![GitHub](https://img.shields.io/badge/GitHub-MassariAndrea-181717?style=flat-square&logo=github)](https://github.com/MassariAndrea)
+
+**Gabriele Galeazzi**
+
+[![GitHub](https://img.shields.io/badge/GitHub-Gale4zz1-181717?style=flat-square&logo=github)](https://github.com/Gale4zz1)
+
+---
+
+<div align="center">
+  <sub>Fatto con ❤️ metta 10 a lorusso please </sub>
+</div>
