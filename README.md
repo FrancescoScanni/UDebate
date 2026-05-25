@@ -154,12 +154,21 @@ UDebate/
 
 ## 👤 Autore
 
-**Francesco Scanni** --- 
-**Alessandro Lorusso (IL GOAT)** --- 
-**Andrea Massari** --- 
-**Gabriele Galeazzi** --- 
+**Francesco Scanni**
 
 [![GitHub](https://img.shields.io/badge/GitHub-FrancescoScanni-181717?style=flat-square&logo=github)](https://github.com/FrancescoScanni)
+
+**Alessandro Lorusso (IL GOAT)**
+
+[![GitHub](https://img.shields.io/badge/GitHub-flexmyedit-181717?style=flat-square&logo=github)](https://github.com/flexmyedit)
+
+**Andrea Massari**
+
+[![GitHub](https://img.shields.io/badge/GitHub-MassariAndrea-181717?style=flat-square&logo=github)](https://github.com/MassariAndrea)
+
+**Gabriele Galeazzi**
+
+[![GitHub](https://img.shields.io/badge/GitHub-Gale4zz1-181717?style=flat-square&logo=github)](https://github.com/Gale4zz1)
 
 ---
 
