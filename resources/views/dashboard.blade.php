@@ -16,7 +16,7 @@
                 <span class="text-xs font-bold uppercase tracking-widest text-[#e8ff47]">Arena attiva</span>
             </div>
             <h1 class="text-4xl sm:text-6xl font-bold tracking-normal leading-tight mb-3" style="font-family: 'Inter', sans-serif;">
-                Ciao, {{ auth()->user()->name}}<br>
+                Ciao, {{ auth()->user()->name }}<br>
                 <span class="text-zinc-500 sm:text-5xl font-normal">Cosa dibatti oggi?</span>
             </h1>
         </div>
@@ -74,6 +74,22 @@
                     <form method="POST" action="{{ route('debates.store') }}">
                         @csrf
                         
+                        {{-- Input per il Titolo --}}
+                        <div class="mb-3">
+                            <input 
+                                type="text" 
+                                name="title" 
+                                value="{{ old('title') }}"
+                                class="w-full bg-[#0a0a0f] text-white border border-[#1e1e2e] rounded-xl p-4 focus:ring-0 focus:border-[#e8ff47] transition-colors placeholder-zinc-600 font-bold text-lg"
+                                placeholder="Dai un titolo di forte impatto al tuo dibattito..."
+                                required
+                            >
+                            @error('title')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Textarea per il Messaggio --}}
                         <textarea 
                             name="message" 
                             rows="4" 
@@ -119,7 +135,7 @@
                         <div class="space-y-4">
                             @foreach ($debates as $debate)
                             
-                            {{-- MAGIA ALPINE: Inizializziamo tutte le variabili per AJAX qui --}}
+                            {{-- Modulo Alpine per singolo dibattito --}}
                             <div x-data="{ 
                                 inModifica: false, 
                                 mostraCommenti: false,
@@ -158,10 +174,9 @@
                                     })
                                     .then(res => res.json())
                                     .then(data => {
-                                        // Aggiungiamo il commento per vederlo subito
                                         this.commentiAggiunti.push(data); 
-                                        this.nuovoCommento = ''; // Svuotiamo il campo
-                                        this.commentsCount = data.count; // Aggiorniamo il numero
+                                        this.nuovoCommento = ''; 
+                                        this.commentsCount = data.count; 
                                     });
                                 }
                             }" class="bg-[#111118] border border-[#1e1e2e] rounded-2xl p-5 hover:border-zinc-700 transition-colors">
@@ -193,15 +208,30 @@
                                     </div>
                                 </div>
 
-                                <p x-show="!inModifica" class="text-zinc-300 text-sm leading-relaxed">
-                                    {{ $debate->message }}
-                                </p>
+                                {{-- Renderizzazione Titolo e Messaggio --}}
+                                <div x-show="!inModifica">
+                                    <h3 class="text-white font-black text-xl mb-1.5 tracking-tight" style="font-family:'Syne',sans-serif;">
+                                        {{ $debate->title }}
+                                    </h3>
+                                    <p class="text-zinc-300 text-sm leading-relaxed">
+                                        {{ $debate->message }}
+                                    </p>
+                                </div>
 
+                                {{-- Form di Modifica Inline (Inclusione Titolo) --}}
                                 @if(auth()->id() === $debate->user_id)
                                     <form x-cloak x-show="inModifica" method="POST" action="{{ route('debates.update', $debate) }}" class="mt-2">
                                         @csrf
                                         @method('PATCH')
                                         
+                                        <input 
+                                            type="text" 
+                                            name="title" 
+                                            value="{{ $debate->title }}"
+                                            class="w-full bg-[#0a0a0f] text-white border border-[#1e1e2e] rounded-xl p-3 text-sm font-bold focus:ring-0 focus:border-[#3d8bff] transition-colors mb-2"
+                                            required
+                                        >
+
                                         <textarea 
                                             name="message" 
                                             rows="3" 
@@ -223,7 +253,7 @@
                                 {{-- Barra delle Interazioni --}}
                                 <div class="flex items-center gap-6 mt-4 pt-4 border-t border-[#1e1e2e]">
                                     
-                                    {{-- Bottone Like AJAX (Nessun form!) --}}
+                                    {{-- Bottone Like --}}
                                     <button @click="toggleLike()" :class="liked ? 'text-[#ff4757]' : 'text-zinc-500 hover:text-[#ff4757]'" class="flex items-center gap-2 text-sm font-bold transition-colors">
                                         <svg width="20" height="20" :fill="liked ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
@@ -231,7 +261,7 @@
                                         <span x-text="likesCount"></span>
                                     </button>
 
-                                    {{-- Bottone Apri/Chiudi Commenti Dinamico --}}
+                                    {{-- Bottone Commenti --}}
                                     <button @click="mostraCommenti = !mostraCommenti" class="flex items-center gap-2 text-sm font-bold text-zinc-500 hover:text-[#3d8bff] transition-colors">
                                         <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
@@ -243,7 +273,7 @@
                                 {{-- Sezione Commenti --}}
                                 <div x-show="mostraCommenti" x-cloak class="mt-4 space-y-4">
                                     
-                                    {{-- Form Inserimento Commento AJAX --}}
+                                    {{-- Form Inserimento Commento --}}
                                     <form @submit.prevent="inviaCommento" class="flex gap-3">
                                         <div class="w-8 h-8 rounded-full bg-[#e8ff47]/15 flex items-center justify-center text-[#e8ff47] font-bold text-xs flex-shrink-0 mt-1">
                                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
@@ -266,7 +296,6 @@
 
                                     {{-- Lista dei Commenti --}}
                                     <div class="space-y-3">
-                                        {{-- Commenti già salvati nel database --}}
                                         @foreach($debate->comments as $comment)
                                             <div class="flex gap-3 bg-[#0a0a0f]/50 rounded-xl p-3 border border-[#1e1e2e]/50">
                                                 <div class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-300 font-bold text-xs flex-shrink-0">
@@ -275,6 +304,9 @@
                                                 <div>
                                                     <div class="flex items-center gap-2 mb-1">
                                                         <span class="font-bold text-white text-xs">{{ $comment->user->name }}</span>
+                                                        <h3 class="text-white font-black text-xl mb-1.5 tracking-tight" style="font-family:'Syne',sans-serif;">
+    {{ $debate->title }}
+</h3>
                                                         <span class="text-zinc-600 text-[10px]">{{ $comment->created_at->diffForHumans() }}</span>
                                                     </div>
                                                     <p class="text-zinc-400 text-sm leading-relaxed">
@@ -284,7 +316,7 @@
                                             </div>
                                         @endforeach
 
-                                        {{-- Nuovi commenti aggiunti in tempo reale (AJAX) --}}
+                                        {{-- Nuovi commenti AJAX via Template Alpine --}}
                                         <template x-for="comment in commentiAggiunti">
                                             <div class="flex gap-3 bg-[#0a0a0f]/50 rounded-xl p-3 border border-[#1e1e2e]/50">
                                                 <div class="w-8 h-8 rounded-full bg-[#e8ff47]/15 flex items-center justify-center text-[#e8ff47] font-bold text-xs flex-shrink-0" x-text="comment.initials || '{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}'">
@@ -317,7 +349,7 @@
                         <span class="text-xs font-bold uppercase tracking-widest text-[#e8ff47]">⚡ Sfida del giorno</span>
                     </div>
                     <p class="text-sm text-zinc-300 leading-relaxed mb-4 border border-[#e8ff47]/15 bg-[#e8ff47]/5 rounded-xl p-3">
-                        "Il colonialismo spaziale è un rischio reale con l'esplorazione privata?"
+                        "Il colonialismo spaziale è un riskio reale con l'esplorazione privata?"
                     </p>
                     <div class="flex gap-2">
                         <button class="flex-1 py-2 rounded-xl bg-[#e8ff47]/10 text-[#e8ff47] text-xs font-bold border border-[#e8ff47]/20 hover:bg-[#e8ff47]/20 transition-colors">
