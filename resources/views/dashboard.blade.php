@@ -57,8 +57,16 @@
                 <div class="flex items-center justify-between mb-1">
                     <h2 class="font-black text-lg" style="font-family:'Syne',sans-serif;">Feed</h2>
                     <div class="flex gap-2">
+                        <form action="{{ route('dashboard') }}" method="GET" class="flex-1 mx-4">
+                            <input 
+                                type="text" 
+                                name="q" 
+                                value="{{ request()->query('q') }}" 
+                                placeholder="Cerca dibattito..." 
+                                class="w-full bg-[#111118] border border-[#1e1e2e] rounded-lg py-1.5 px-4 text-xs text-white focus:ring-0 focus:border-[#e8ff47] transition-colors"
+                            >
+                        </form>
                         <button class="px-3 py-1.5 rounded-lg bg-[#e8ff47]/10 text-[#e8ff47] text-xs font-bold border border-[#e8ff47]/20">Tutti</button>
-                        <button class="px-3 py-1.5 rounded-lg text-zinc-500 text-xs font-bold border border-transparent hover:border-zinc-800 transition-colors">Seguiti</button>
                     </div>
                 </div>
 
