@@ -32,6 +32,10 @@ Route::view('profile', 'profile')
 Route::get('/moderator', [ModeratorController::class, 'index'])
     ->middleware(['auth', 'moderator'])
     ->name('moderator.dashboard');
+Route::middleware(['auth', 'moderator'])->prefix('moderator')->name('moderator.')->group(function () {
+    Route::get('/',        [ModeratorController::class, 'index'])->name('dashboard');
+    Route::get('/users',   [ModeratorController::class, 'users'])->name('users');
+    Route::get('/debates', [ModeratorController::class, 'debates'])->name('debates');
+});
     
-
 require __DIR__.'/auth.php';

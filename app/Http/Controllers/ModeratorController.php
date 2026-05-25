@@ -9,12 +9,9 @@ class ModeratorController extends Controller
 {
     public function index()
     {
-        $allDebates   = Debate::with(['user', 'comments', 'likes'])->latest()->get();
         $usersCount   = User::count();
         $debatesCount = Debate::count();
 
-        return view('moderator.dashboard', compact(
-            'allDebates', 'usersCount', 'debatesCount'
-        ));
+        return view('moderator.dashboard', compact('usersCount', 'debatesCount'));
     }
 }
