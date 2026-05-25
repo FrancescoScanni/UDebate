@@ -4,17 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\Debate;
 use Illuminate\Http\Request;
+use App\Models\Like;
+use App\Models\Comment;
 
 class DebateController extends Controller
 {
     // Mostra la dashboard con i dibattiti
     public function index()
     {
-        // Prende tutti i dibattiti, dal più recente, con l'autore allegato
+        $user = auth()->user();
         $debates = Debate::with(['user', 'likes', 'comments.user'])->latest()->get();
 
-        // Manda i dati alla vista 'dashboard' (che si trova in resources/views/dashboard.blade.php)
-        return view('dashboard', compact('debates'));
+        // ── Blocchi stats attuali ──────────────────────────────────────
+        $debatesCount    = $user->debates()->count();
+        $votesReceived   = Like::whereIn('debate_id', $user->debates()->pluck('id'))->count();
+        $commentsReceived = Comment::whereIn('debate_id', $user->debates()->pluck('id'))->count();
+        // "Reputazione" = voti + commenti ricevuti (formula a piacere)
+        $reputation      = $votesReceived + $commentsReceived;
+
+        // ── 3 nuovi blocchi sidebar ────────────────────────────────────
+        $myDebates       = $user->debates()->latest()->take(5)->get();          // Dibattiti aperti da me
+        $likesReceived   = Like::whereIn('debate_id', $user->debates()->pluck('id'))
+                            ->with('debate')->latest()->take(5)->get();      // Like ricevuti
+        $commentsOnMine  = Comment::whereIn('debate_id', $user->debates()->pluck('id'))
+                                ->with(['user', 'debate'])->latest()->take(5)->get(); // Commenti ricevuti
+
+        return view('dashboard', compact(
+            'debates',
+            'debatesCount', 'votesReceived', 'commentsReceived', 'reputation',
+            'myDebates', 'likesReceived', 'commentsOnMine'
+        ));
     }
 
     // Salva un nuovo dibattito dal form

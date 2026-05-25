@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Like extends Model
 {
     protected $fillable = ['user_id', 'debate_id'];
+    public function debate()
+    {
+        return $this->belongsTo(Debate::class);
+    }
 }
