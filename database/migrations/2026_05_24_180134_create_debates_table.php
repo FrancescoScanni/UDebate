@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('debates', function (Blueprint $table) {
             $table->id();
-            // Aggiungiamo l'utente che crea il dibattito
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            // Il testo del dibattito
-            $table->text('message');
+            $table->string('title'); // <-- Aggiungi questa riga
+            $table->text('body');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
