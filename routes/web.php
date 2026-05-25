@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ModeratorController;
+use App\Http\Controllers\SearchController;
 
 
 
@@ -43,5 +44,8 @@ Route::middleware(['auth', 'moderator'])->prefix('moderator')->name('moderator.'
 
 Route::post('/moderator/update-topic', [ModeratorController::class, 'updateTopic'])
     ->name('admin.updateTopic');
+   
+
+Route::get('/cerca', [SearchController::class, 'search'])->name('search.index');
     
 require __DIR__.'/auth.php';

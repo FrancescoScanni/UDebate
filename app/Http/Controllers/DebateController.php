@@ -22,19 +22,30 @@ class DebateController extends Controller
     }
 
     // lettura dati statistiche e topic del giorno
-    public function index()
+    // Lettura dati statistiche, topic del giorno e gestione ricerca
+    public function index(Request $request)
     {
+        $search = $request->input('q');
+
         $user = auth()->user();
         $dailyTopic = DailyTopic::latest()->first();
-        $debates = Debate::with(['user', 'likes', 'comments.user'])->latest()->get();
 
-        $debatesCount    = $user->debates()->count();
-        $votesReceived   = Like::whereIn('debate_id', $user->debates()->pluck('id'))->count();
+
+        $debates = Debate::with(['user', 'likes', 'comments.user'])
+            ->when($search, function ($query, $search) {
+                $query->where('title', 'like', '%' . $search . '%')
+                      ->orWhere('message', 'like', '%' . $search . '%');
+            })
+            ->latest()
+            ->get();
+
+        $debatesCount     = $user->debates()->count();
+        $votesReceived    = Like::whereIn('debate_id', $user->debates()->pluck('id'))->count();
         $commentsReceived = Comment::whereIn('debate_id', $user->debates()->pluck('id'))->count();
 
-        $myDebates       = $user->debates()->latest()->take(5)->get();
-        $likesReceived   = Like::whereIn('debate_id', $user->debates()->pluck('id'))->with('debate')->latest()->take(5)->get();
-        $commentsOnMine  = Comment::whereIn('debate_id', $user->debates()->pluck('id'))->with(['user', 'debate'])->latest()->take(5)->get();
+        $myDebates        = $user->debates()->latest()->take(5)->get();
+        $likesReceived    = Like::whereIn('debate_id', $user->debates()->pluck('id'))->with('debate')->latest()->take(5)->get();
+        $commentsOnMine   = Comment::whereIn('debate_id', $user->debates()->pluck('id'))->with(['user', 'debate'])->latest()->take(5)->get();
 
         return view('dashboard', compact(
             'debates', 'debatesCount', 'votesReceived', 'commentsReceived', 
