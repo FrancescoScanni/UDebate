@@ -105,7 +105,7 @@ APP_URL=http://localhost:8080
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=udebate
+DB_DATABASE=app (default di livewire)
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -154,12 +154,15 @@ UDebate/
 
 ## 👤 Autore
 
-**Francesco Scanni** — Progetto universitario
+**Francesco Scanni** --- 
+**Alessandro Lorusso (IL GOAT)** --- 
+**Andrea Massari** --- 
+**Gabriele Galeazzi** --- 
 
 [![GitHub](https://img.shields.io/badge/GitHub-FrancescoScanni-181717?style=flat-square&logo=github)](https://github.com/FrancescoScanni)
 
 ---
 
 <div align="center">
-  <sub>Fatto con ❤️ e tante tesi da difendere</sub>
+  <sub>Fatto con ❤️ metta 10 a lorusso please </sub>
 </div>
