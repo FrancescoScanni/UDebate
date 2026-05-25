@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up()
-    {
+    {   //aggiunta ruolo a user (dopo migration user) + pulizia cache
         Schema::table('users', function (Blueprint $table) {
             $table->string('role')->default('user');
         });

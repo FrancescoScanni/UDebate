@@ -1,83 +1,91 @@
 <?php
 
+// gestione dibattiti e dashboard con moderazione ai
+
 namespace App\Http\Controllers;
 
 use App\Models\Debate;
 use Illuminate\Http\Request;
 use App\Models\Like;
 use App\Models\Comment;
+use App\Services\GroqModerationService; 
+use App\Models\DailyTopic;
 
 class DebateController extends Controller
 {
-    // Mostra la dashboard con i dibattiti
+    protected $moderator;
+
+    // injection servizio moderazione
+    public function __construct(GroqModerationService $moderator)
+    {
+        $this->moderator = $moderator;
+    }
+
+    // lettura dati statistiche e topic del giorno
     public function index()
     {
         $user = auth()->user();
+        $dailyTopic = DailyTopic::latest()->first();
         $debates = Debate::with(['user', 'likes', 'comments.user'])->latest()->get();
 
-        // ── Blocchi stats attuali ──────────────────────────────────────
         $debatesCount    = $user->debates()->count();
         $votesReceived   = Like::whereIn('debate_id', $user->debates()->pluck('id'))->count();
         $commentsReceived = Comment::whereIn('debate_id', $user->debates()->pluck('id'))->count();
-        // "Reputazione" = voti + commenti ricevuti (formula a piacere)
-        $reputation      = $votesReceived + $commentsReceived;
 
-        // ── 3 nuovi blocchi sidebar ────────────────────────────────────
-        $myDebates       = $user->debates()->latest()->take(5)->get();          // Dibattiti aperti da me
-        $likesReceived   = Like::whereIn('debate_id', $user->debates()->pluck('id'))
-                            ->with('debate')->latest()->take(5)->get();      // Like ricevuti
-        $commentsOnMine  = Comment::whereIn('debate_id', $user->debates()->pluck('id'))
-                                ->with(['user', 'debate'])->latest()->take(5)->get(); // Commenti ricevuti
+        $myDebates       = $user->debates()->latest()->take(5)->get();
+        $likesReceived   = Like::whereIn('debate_id', $user->debates()->pluck('id'))->with('debate')->latest()->take(5)->get();
+        $commentsOnMine  = Comment::whereIn('debate_id', $user->debates()->pluck('id'))->with(['user', 'debate'])->latest()->take(5)->get();
 
         return view('dashboard', compact(
-            'debates',
-            'debatesCount', 'votesReceived', 'commentsReceived', 'reputation',
-            'myDebates', 'likesReceived', 'commentsOnMine'
+            'debates', 'debatesCount', 'votesReceived', 'commentsReceived', 
+            'myDebates', 'likesReceived', 'commentsOnMine', 'dailyTopic'
         ));
     }
 
-    // Salva un nuovo dibattito dal form
+    // validazione test analisi ai e persistenza dati
     public function store(Request $request)
-        {
-            // 1. Valida sia il titolo che il messaggio
-            $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'message' => 'required|string',
-            ]);
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
 
-            // 2. Crea il dibattito (ora prenderà anche il titolo grazie al $fillable)
-            $request->user()->debates()->create($validated);
+        $textToAnalyze = $validated['title'] . " " . $validated['message'];
 
-            return redirect()->route('dashboard');
+        // check ai anti insulti
+        if ($this->moderator->isOffensive($textToAnalyze)) {
+            return back()->withErrors(['message' => 'Linguaggio inappropriato rilevato. Rivedi il testo.'])->withInput(); 
         }
 
+        $request->user()->debates()->create($validated);
+
+        return redirect()->route('dashboard')->with('success', 'Dibattito pubblicato!');
+    }
+
+    // autorizzazione validazione check ai e update
     public function update(Request $request, Debate $debate)
     {
-        // 1. Controllo di sicurezza: l'utente è il proprietario?
-        if ($debate->user_id !== auth()->id()) {
-            abort(403, 'Azione non autorizzata.');
-        }
-        // 2. Validazione
-        $request->validate([
+        if ($debate->user_id !== auth()->id()) abort(403);
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'message' => 'required|string|max:1000',
         ]);
-        // 3. Aggiornamento
-        $debate->update([
-            'title' => $request->title,
-            'message' => $request->message,
-        ]);
-        return back();
+        $textToAnalyze = $validated['title'] . " " . $validated['message'];
+
+        // check ai su modifica
+        if ($this->moderator->isOffensive($textToAnalyze)) {
+            return back()->withErrors(['message' => 'Linguaggio inappropriato rilevato. Rivedi il testo.'])->withInput();
+        }
+
+        $debate->update($validated);
+        return back()->with('success', 'Dibattito aggiornato!');
     }
 
+    // autorizzazione e cancellazione record
     public function destroy(Debate $debate)
     {
-        // 1. Controllo di sicurezza: l'utente è il proprietario?
-        if ($debate->user_id !== auth()->id()) {
-            abort(403, 'Azione non autorizzata.');
-        }
-        // 2. Eliminazione
+        if ($debate->user_id !== auth()->id()) abort(403);
         $debate->delete();
-        return back();
+        return back()->with('success', 'Dibattito eliminato.');
     }
 }

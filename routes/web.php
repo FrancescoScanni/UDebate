@@ -5,6 +5,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ModeratorController;
 
+
+
 Route::view('/', 'welcome');
 
 /*Route::view('dashboard', 'dashboard')
@@ -37,5 +39,9 @@ Route::middleware(['auth', 'moderator'])->prefix('moderator')->name('moderator.'
     Route::get('/users',   [ModeratorController::class, 'users'])->name('users');
     Route::get('/debates', [ModeratorController::class, 'debates'])->name('debates');
 });
+
+
+Route::post('/moderator/update-topic', [ModeratorController::class, 'updateTopic'])
+    ->name('admin.updateTopic');
     
 require __DIR__.'/auth.php';

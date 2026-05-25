@@ -1,5 +1,7 @@
 <?php
 
+// gestione dei mi piace sui dibattiti con logica di toggle
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -7,34 +9,36 @@ use App\Models\Debate;
 
 class LikeController extends Controller
 {
+    // inversione stato del mi piace
     public function toggle(Debate $debate)
     {
+        // recupero utente autenticato
         $user = auth()->user();
-        
-        // Controlliamo se l'utente ha già messo like usando il metodo che hai nel modello Debate
+        // verifica esistenza mi piace precedente
         $hasLiked = $debate->isLikedBy($user);
 
+        // rimozione o inserimento record mi piace
         if ($hasLiked) {
-            // Se c'era già il like, lo eliminiamo
+            // rimozione mi piace dal database
             $debate->likes()->where('user_id', $user->id)->delete();
             $isNowLiked = false;
+
         } else {
-            // Se non c'era, lo creiamo
+            // creazione nuovo mi piace nel database
             $debate->likes()->create([
                 'user_id' => $user->id
             ]);
             $isNowLiked = true;
         }
 
-        // Se la richiesta arriva tramite AJAX (il nostro codice fetch di Alpine.js)
+        // risposta per richiesta asincrona frontend
         if (request()->wantsJson()) {
+            // restituzione stato e contatore aggiornato
             return response()->json([
-                'liked' => $isNowLiked, // true o false
-                'count' => $debate->likes()->count() // il nuovo totale dei like
+                'liked' => $isNowLiked, 
+                'count' => $debate->likes()->count() 
             ]);
         }
-
-        // Fallback di sicurezza: se per qualche motivo non è una richiesta JSON, ricarica la pagina
         return back();
     }
 }

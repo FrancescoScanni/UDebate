@@ -349,23 +349,31 @@
             {{-- Sidebar --}}
             <div class="space-y-4">
 
-                {{-- Sfida del giorno --}}
-                <div class="bg-[#111118] border border-[#1e1e2e] rounded-2xl p-5">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="text-xs font-bold uppercase tracking-widest text-[#e8ff47]">⚡ Sfida del giorno</span>
-                    </div>
-                    <p class="text-sm text-zinc-300 leading-relaxed mb-4 border border-[#e8ff47]/15 bg-[#e8ff47]/5 rounded-xl p-3">
-                        "Il colonialismo spaziale è un riskio reale con l'esplorazione privata?"
-                    </p>
-                    <div class="flex gap-2">
-                        <button class="flex-1 py-2 rounded-xl bg-[#e8ff47]/10 text-[#e8ff47] text-xs font-bold border border-[#e8ff47]/20 hover:bg-[#e8ff47]/20 transition-colors">
-                            ↑ Sì
-                        </button>
-                        <button class="flex-1 py-2 rounded-xl bg-[#ff4757]/10 text-[#ff4757] text-xs font-bold border border-[#ff4757]/20 hover:bg-[#ff4757]/20 transition-colors">
-                            ↓ No
-                        </button>
-                    </div>
+
+            <div class="bg-[#111118] border-2 border-[#dfff00] shadow-[0_0_15px_rgba(223,255,0,0.15)] rounded-2xl p-6 mb-6">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></div>
+                    <h3 class="font-black text-yellow-400 text-xs uppercase tracking-widest flex items-center gap-1">
+                       🔥 Sfida del Giorno 🔥
+                    </h3>
                 </div>
+                
+                @if(isset($dailyTopic) && $dailyTopic)
+                    <p class="text-white text-lg font-semibold leading-relaxed mb-4">
+                        {{ $dailyTopic->topic }}
+                    </p>
+
+                    {{-- Sezione Info (Senza Redirect) --}}
+                    <div class="pt-4 border-t border-[#1e1e2e]">
+                        <p class="text-zinc-400 text-sm">
+                            Discutine nella sezione dedicata.
+                        </p>
+                    </div>
+                @else
+                    <p class="text-zinc-500 italic">Nessuna sfida impostata per oggi.</p>
+                @endif
+            </div>
+            {{-- FINE BLOCCO SFIDA DEL GIORNO --}}
 
                 {{-- Trending topics --}}
                 <div class="bg-[#111118] border border-[#1e1e2e] rounded-2xl p-5">
