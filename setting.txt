@@ -1,11 +1,7 @@
 
 SET UP -> Win Powershell/Git Bash
 
-<<<<<<< HEAD
-1.  (SOLO SU PWSD)
-=======
-1. Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process (SOLO SU pshell)
->>>>>>> e06aed4 (Setup update)
+1.  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process (SOLO SU PWSD)
 
 2. npm install (installare l'ultima versione di Node.js)
 
