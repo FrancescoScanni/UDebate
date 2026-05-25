@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
         {
+            //creazione tabella dibattiti con chiave esterna verso utenti e campi titolo messaggio e timestamp
             Schema::create('debates', function (Blueprint $table) {
                 $table->id();
-                $table->string('title');   // <-- Il titolo che abbiamo aggiunto prima
-                $table->text('message');   // <-- ASSICURATI CHE QUESTA RIGA CI SIA!
+                $table->string('title');  
+                $table->text('message');  
                 $table->foreignId('user_id')->constrained()->cascadeOnDelete();
                 $table->timestamps();
             });
         }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('debates');
