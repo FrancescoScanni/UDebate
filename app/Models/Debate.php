@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Debate extends Model
 {
     // Permettiamo il salvataggio del messaggio dal form
-    protected $fillable = ['message'];
+    protected $fillable = [
+        'title',     // <-- DEVI AGGIUNGERE QUESTO
+        'message',
+    ];
 
     // Relazione: questo dibattito appartiene a un utente
     public function user(): BelongsTo

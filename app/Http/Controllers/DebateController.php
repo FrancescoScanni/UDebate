@@ -19,18 +19,18 @@ class DebateController extends Controller
 
     // Salva un nuovo dibattito dal form
     public function store(Request $request)
-    {
-        // 1. Controlla che il campo non sia vuoto
-        $validated = $request->validate([
-            'message' => 'required|string|max:255',
-        ]);
+        {
+            // 1. Valida sia il titolo che il messaggio
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'message' => 'required|string',
+            ]);
 
-        // 2. Salva il dibattito collegandolo all'utente loggato
-        $request->user()->debates()->create($validated);
+            // 2. Crea il dibattito (ora prenderà anche il titolo grazie al $fillable)
+            $request->user()->debates()->create($validated);
 
-        // 3. Ricarica la pagina
-        return back();
-    }
+            return redirect()->route('dashboard');
+        }
 
     public function update(Request $request, Debate $debate)
     {
@@ -40,10 +40,12 @@ class DebateController extends Controller
         }
         // 2. Validazione
         $request->validate([
+            'title' => 'required|string|max:255',
             'message' => 'required|string|max:1000',
         ]);
         // 3. Aggiornamento
         $debate->update([
+            'title' => $request->title,
             'message' => $request->message,
         ]);
         return back();
