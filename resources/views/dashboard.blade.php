@@ -15,20 +15,25 @@
                 <div class="w-2 h-2 rounded-full bg-[#e8ff47] animate-pulse"></div>
                 <span class="text-xs font-bold uppercase tracking-widest text-[#e8ff47]">Arena attiva</span>
             </div>
+<<<<<<< Updated upstream
             <h1 class="text-4xl sm:text-5xl font-black tracking-tight leading-tight mb-3" style="font-family:'Syne',sans-serif;">
                 Ciao, {{ auth()->user()->name }}.<br>
                 <span class="text-zinc-500">Cosa dibatti oggi?</span>
+=======
+            <h1 class="text-4xl sm:text-6xl font-bold tracking-normal leading-tight mb-3" style="font-family: 'Inter', sans-serif;">
+                Ciao, {{ auth()->user()->name }}<br>
+                <span class="text-zinc-500 sm:text-5xl font-normal">Cosa dibatti oggi?</span>
+>>>>>>> Stashed changes
             </h1>
         </div>
 
         {{-- Stats row --}}
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-10">
             @php
             $stats = [
-                ['label' => 'Dibattiti aperti', 'value' => '0', 'icon' => '💬', 'color' => 'e8ff47'],
-                ['label' => 'Voti ricevuti', 'value' => '0', 'icon' => '🗳️', 'color' => '3d8bff'],
-                ['label' => 'Risposte', 'value' => '0', 'icon' => '↩️', 'color' => 'c084fc'],
-                ['label' => 'Reputazione', 'value' => '0', 'icon' => '⚡', 'color' => 'ff4757'],
+                ['label' => 'Dibattiti aperti', 'value' => $debattiAperti, 'icon' => '💬', 'color' => 'e8ff47'],
+                ['label' => 'Like ricevuti',    'value' => $likeRicevuti,  'icon' => '❤️', 'color' => 'ff4757'],
+                ['label' => 'Risposte',         'value' => $risposte,      'icon' => '↩️', 'color' => 'c084fc'],
             ];
             @endphp
             @foreach($stats as $s)
@@ -44,7 +49,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
             {{-- Feed area --}}
+<<<<<<< Updated upstream
             <div class="lg:col-span-2 space-y-4">
+=======
+            <div class="lg:col-span-2 space-y-4" x-data="{ mostraForm: false }">
+
+>>>>>>> Stashed changes
                 <div class="flex items-center justify-between mb-1">
                     <h2 class="font-black text-lg" style="font-family:'Syne',sans-serif;">Feed</h2>
                     <div class="flex gap-2">
@@ -54,7 +64,13 @@
                 </div>
 
                 {{-- New debate CTA --}}
+<<<<<<< Updated upstream
                 <div class="bg-[#111118] border border-dashed border-[#e8ff47]/25 rounded-2xl p-5 flex items-center gap-4 hover:border-[#e8ff47]/50 transition-colors cursor-pointer group">
+=======
+                <div x-show="!mostraForm"
+                     @click="mostraForm = true"
+                     class="bg-[#111118] border border-dashed border-[#e8ff47]/25 rounded-2xl p-5 flex items-center gap-4 hover:border-[#e8ff47]/50 transition-colors cursor-pointer group">
+>>>>>>> Stashed changes
                     <div class="w-10 h-10 rounded-xl bg-[#e8ff47]/10 flex items-center justify-center text-[#e8ff47] group-hover:bg-[#e8ff47]/20 transition-colors flex-shrink-0">
                         <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
@@ -66,6 +82,7 @@
                     </div>
                 </div>
 
+<<<<<<< Updated upstream
                 {{-- Empty state --}}
                 <div class="bg-[#111118] border border-[#1e1e2e] rounded-2xl p-12 text-center">
                     <div class="text-5xl mb-4">⚖️</div>
@@ -79,13 +96,221 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
                         </svg>
                     </button>
+=======
+                {{-- Form di inserimento --}}
+                <div x-show="mostraForm" x-cloak class="bg-[#111118] border border-[#1e1e2e] rounded-2xl p-5 mb-4">
+                    <form method="POST" action="{{ route('debates.store') }}">
+                        @csrf
+                        <textarea
+                            name="message"
+                            rows="4"
+                            class="w-full bg-[#0a0a0f] text-white border border-[#1e1e2e] rounded-xl p-4 focus:ring-0 focus:border-[#e8ff47] transition-colors resize-none placeholder-zinc-600"
+                            placeholder="Scrivi qui la tua tesi. Sii chiaro e diretto..."
+                            required
+                        ></textarea>
+                        @error('message')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
+                        <div class="flex justify-end mt-4 gap-3">
+                            <button type="button" @click="mostraForm = false" class="px-5 py-2.5 rounded-xl text-zinc-400 text-sm font-bold hover:text-white transition-colors">
+                                Annulla
+                            </button>
+                            <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#e8ff47] text-black text-sm font-extrabold hover:bg-[#d4eb30] transition-colors">
+                                Pubblica
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                {{-- Feed --}}
+                <div>
+                    @if ($debates->isEmpty())
+                        <div x-show="!mostraForm" class="bg-[#111118] border border-[#1e1e2e] rounded-2xl p-12 text-center">
+                            <div class="text-5xl mb-4">⚖️</div>
+                            <h3 class="font-black text-lg mb-2" style="font-family:'Syne',sans-serif;">Il feed è vuoto</h3>
+                            <p class="text-zinc-500 text-sm max-w-xs mx-auto leading-relaxed">
+                                Non ci sono ancora dibattiti. Sii il primo ad aprire una discussione e far partire il confronto.
+                            </p>
+                            <button @click="mostraForm = true" class="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#e8ff47] text-black text-sm font-extrabold hover:bg-[#d4eb30] transition-colors">
+                                Inizia tu
+                                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    @else
+                        <div class="space-y-4">
+                            @foreach ($debates as $debate)
+                            <div x-data="{
+                                inModifica: false,
+                                mostraCommenti: false,
+                                liked: {{ $debate->isLikedBy(auth()->user()) ? 'true' : 'false' }},
+                                likesCount: {{ $debate->likes->count() }},
+                                commentsCount: {{ $debate->comments->count() }},
+                                nuovoCommento: '',
+                                commentiAggiunti: [],
+
+                                toggleLike() {
+                                    fetch('{{ route('likes.toggle', $debate) }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json'
+                                        }
+                                    })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        this.liked = data.liked;
+                                        this.likesCount = data.count;
+                                    });
+                                },
+
+                                inviaCommento() {
+                                    if(this.nuovoCommento.trim() === '') return;
+                                    fetch('{{ route('comments.store', $debate) }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Content-Type': 'application/json',
+                                            'Accept': 'application/json'
+                                        },
+                                        body: JSON.stringify({ body: this.nuovoCommento })
+                                    })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        this.commentiAggiunti.push(data);
+                                        this.nuovoCommento = '';
+                                        this.commentsCount = data.count;
+                                    });
+                                }
+                            }" class="bg-[#111118] border border-[#1e1e2e] rounded-2xl p-5 hover:border-zinc-700 transition-colors">
+
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-8 h-8 rounded-full bg-[#3d8bff]/15 flex items-center justify-center text-[#3d8bff] font-bold text-xs">
+                                            {{ strtoupper(substr($debate->user->name, 0, 1)) }}
+                                        </div>
+                                        <span class="font-bold text-white text-sm">{{ $debate->user->name }}</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-zinc-500 text-xs">{{ $debate->created_at->diffForHumans() }}</span>
+                                        @if(auth()->id() === $debate->user_id)
+                                            <button @click="inModifica = true" x-show="!inModifica" class="text-xs font-bold text-[#3d8bff] hover:text-[#5e9eff] transition-colors">
+                                                Modifica
+                                            </button>
+                                            <form x-show="!inModifica" method="POST" action="{{ route('debates.destroy', $debate) }}" class="inline m-0">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo dibattito?')" class="text-xs font-bold text-[#ff4757] hover:text-[#ff6b78] transition-colors">
+                                                    Elimina
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <p x-show="!inModifica" class="text-zinc-300 text-sm leading-relaxed">
+                                    {{ $debate->message }}
+                                </p>
+
+                                @if(auth()->id() === $debate->user_id)
+                                    <form x-cloak x-show="inModifica" method="POST" action="{{ route('debates.update', $debate) }}" class="mt-2">
+                                        @csrf
+                                        @method('PATCH')
+                                        <textarea
+                                            name="message"
+                                            rows="3"
+                                            class="w-full bg-[#0a0a0f] text-white border border-[#1e1e2e] rounded-xl p-3 text-sm focus:ring-0 focus:border-[#3d8bff] transition-colors resize-none"
+                                            required
+                                        >{{ $debate->message }}</textarea>
+                                        <div class="flex justify-end mt-2 gap-2">
+                                            <button type="button" @click="inModifica = false" class="px-3 py-1.5 rounded-lg text-zinc-400 text-xs font-bold hover:text-white transition-colors">
+                                                Annulla
+                                            </button>
+                                            <button type="submit" class="px-4 py-1.5 rounded-lg bg-[#3d8bff] text-white text-xs font-bold hover:bg-[#5e9eff] transition-colors">
+                                                Salva modifiche
+                                            </button>
+                                        </div>
+                                    </form>
+                                @endif
+
+                                <div class="flex items-center gap-6 mt-4 pt-4 border-t border-[#1e1e2e]">
+                                    <button @click="toggleLike()" :class="liked ? 'text-[#ff4757]' : 'text-zinc-500 hover:text-[#ff4757]'" class="flex items-center gap-2 text-sm font-bold transition-colors">
+                                        <svg width="20" height="20" :fill="liked ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                        </svg>
+                                        <span x-text="likesCount"></span>
+                                    </button>
+                                    <button @click="mostraCommenti = !mostraCommenti" class="flex items-center gap-2 text-sm font-bold text-zinc-500 hover:text-[#3d8bff] transition-colors">
+                                        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+                                        </svg>
+                                        <span x-text="commentsCount"></span>
+                                    </button>
+                                </div>
+
+                                <div x-show="mostraCommenti" x-cloak class="mt-4 space-y-4">
+                                    <form @submit.prevent="inviaCommento" class="flex gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-[#e8ff47]/15 flex items-center justify-center text-[#e8ff47] font-bold text-xs flex-shrink-0 mt-1">
+                                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                        </div>
+                                        <div class="flex-1">
+                                            <textarea
+                                                x-model="nuovoCommento"
+                                                rows="1"
+                                                class="w-full bg-[#0a0a0f] text-white border border-[#1e1e2e] rounded-xl p-3 text-sm focus:ring-0 focus:border-[#e8ff47] transition-colors resize-none placeholder-zinc-600"
+                                                placeholder="Scrivi una risposta..."
+                                                required
+                                            ></textarea>
+                                            <div class="flex justify-end mt-2">
+                                                <button type="submit" class="px-4 py-1.5 rounded-lg bg-[#e8ff47] text-black text-xs font-bold hover:bg-[#d4eb30] transition-colors">
+                                                    Rispondi
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="space-y-3">
+                                        @foreach($debate->comments as $comment)
+                                            <div class="flex gap-3 bg-[#0a0a0f]/50 rounded-xl p-3 border border-[#1e1e2e]/50">
+                                                <div class="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-300 font-bold text-xs flex-shrink-0">
+                                                    {{ strtoupper(substr($comment->user->name, 0, 1)) }}
+                                                </div>
+                                                <div>
+                                                    <div class="flex items-center gap-2 mb-1">
+                                                        <span class="font-bold text-white text-xs">{{ $comment->user->name }}</span>
+                                                        <span class="text-zinc-600 text-[10px]">{{ $comment->created_at->diffForHumans() }}</span>
+                                                    </div>
+                                                    <p class="text-zinc-400 text-sm leading-relaxed">{{ $comment->body }}</p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                        <template x-for="comment in commentiAggiunti">
+                                            <div class="flex gap-3 bg-[#0a0a0f]/50 rounded-xl p-3 border border-[#1e1e2e]/50">
+                                                <div class="w-8 h-8 rounded-full bg-[#e8ff47]/15 flex items-center justify-center text-[#e8ff47] font-bold text-xs flex-shrink-0" x-text="comment.initials || '{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}'">
+                                                </div>
+                                                <div>
+                                                    <div class="flex items-center gap-2 mb-1">
+                                                        <span class="font-bold text-white text-xs" x-text="comment.user_name || '{{ auth()->user()->name }}'"></span>
+                                                        <span class="text-[#e8ff47]/80 text-[10px]">Proprio ora</span>
+                                                    </div>
+                                                    <p class="text-zinc-400 text-sm leading-relaxed" x-text="comment.body"></p>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+
+                            </div>
+                            @endforeach
+                        </div>
+                    @endif
+>>>>>>> Stashed changes
                 </div>
             </div>
 
             {{-- Sidebar --}}
             <div class="space-y-4">
 
-                {{-- Sfida del giorno --}}
                 <div class="bg-[#111118] border border-[#1e1e2e] rounded-2xl p-5">
                     <div class="flex items-center gap-2 mb-3">
                         <span class="text-xs font-bold uppercase tracking-widest text-[#e8ff47]">⚡ Sfida del giorno</span>
@@ -103,16 +328,15 @@
                     </div>
                 </div>
 
-                {{-- Trending topics --}}
                 <div class="bg-[#111118] border border-[#1e1e2e] rounded-2xl p-5">
                     <div class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-4">🔥 Trending</div>
                     @php
                     $trending = [
-                        ['topic' => 'IA e mercato del lavoro', 'count' => '2.1K'],
-                        ['topic' => 'Smart working: pro e contro', 'count' => '1.8K'],
-                        ['topic' => 'Crypto vs euro digitale', 'count' => '967'],
-                        ['topic' => 'Vegano vs onnivoro', 'count' => '754'],
-                        ['topic' => 'Università vs bootcamp', 'count' => '612'],
+                        ['topic' => 'IA e mercato del lavoro',   'count' => '2.1K'],
+                        ['topic' => 'Smart working: pro e contro','count' => '1.8K'],
+                        ['topic' => 'Crypto vs euro digitale',    'count' => '967'],
+                        ['topic' => 'Vegano vs onnivoro',         'count' => '754'],
+                        ['topic' => 'Università vs bootcamp',     'count' => '612'],
                     ];
                     @endphp
                     @foreach($trending as $i => $t)
@@ -124,7 +348,6 @@
                     @endforeach
                 </div>
 
-                {{-- Profilo quick --}}
                 <div class="bg-[#111118] border border-[#1e1e2e] rounded-2xl p-5">
                     <div class="flex items-center gap-3 mb-4">
                         <div class="w-10 h-10 rounded-full bg-[#e8ff47]/15 flex items-center justify-center text-[#e8ff47] font-black text-lg">
