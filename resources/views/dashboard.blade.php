@@ -25,12 +25,12 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
             @php
             $stats = [
-                ['label' => 'Dibattiti aperti', 'value' => '0', 'icon' => '💬', 'color' => 'e8ff47'],
-                ['label' => 'Voti ricevuti', 'value' => '0', 'icon' => '🗳️', 'color' => '3d8bff'],
-                ['label' => 'Risposte', 'value' => '0', 'icon' => '↩️', 'color' => 'c084fc'],
-                ['label' => 'Reputazione', 'value' => '0', 'icon' => '⚡', 'color' => 'ff4757'],
+                ['label' => 'Dibattiti aperti', 'value' => $debatesCount,     'icon' => '💬', 'color' => 'e8ff47'],
+                ['label' => 'Voti ricevuti',    'value' => $votesReceived,    'icon' => '🗳️', 'color' => '3d8bff'],
+                ['label' => 'Risposte',         'value' => $commentsReceived, 'icon' => '↩️', 'color' => 'c084fc'],
             ];
             @endphp
+
             @foreach($stats as $s)
             <div class="bg-[#111118] border border-[#1e1e2e] rounded-2xl p-4 sm:p-5 hover:border-zinc-700 transition-colors">
                 <div class="text-2xl mb-2">{{ $s['icon'] }}</div>
@@ -38,6 +38,14 @@
                 <div class="text-xs text-zinc-500 mt-0.5 font-medium">{{ $s['label'] }}</div>
             </div>
             @endforeach
+
+            {{-- Quarta cella: pulsante reload --}}
+            <button onclick="window.location.reload()" class="rounded-2xl p-4 sm:p-5 hover:bg-[#e8ff47]/5 transition-colors group flex flex-col items-center justify-center gap-2">
+                <svg class="w-8 h-8 text-[#e8ff47] group-hover:rotate-180 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                </svg>
+                <span class="text-sm font-black uppercase tracking-wider text-[#e8ff47]" style="font-family:'Syne',sans-serif;">Reload</span>
+            </button>
         </div>
 
         {{-- Main grid --}}
@@ -304,9 +312,7 @@
                                                 <div>
                                                     <div class="flex items-center gap-2 mb-1">
                                                         <span class="font-bold text-white text-xs">{{ $comment->user->name }}</span>
-                                                        <h3 class="text-white font-black text-xl mb-1.5 tracking-tight" style="font-family:'Syne',sans-serif;">
-    {{ $debate->title }}
-</h3>
+                                                        
                                                         <span class="text-zinc-600 text-[10px]">{{ $comment->created_at->diffForHumans() }}</span>
                                                     </div>
                                                     <p class="text-zinc-400 text-sm leading-relaxed">
