@@ -30,7 +30,6 @@ UDebate è una piattaforma web per il dibattito universitario. Gli utenti posson
 | ❤️ **Like** | Toggle like/unlike senza ricaricare la pagina (AJAX) |
 | ↩️ **Commenti** | Risposte in tempo reale via AJAX |
 | 📊 **Dashboard** | Statistiche personali: dibattiti aperti, like ricevuti, risposte |
-| 🔥 **Trending** | Lista dei topic più discussi in sidebar |
 | ⚡ **Sfida del giorno** | Quesito quotidiano con votazione Sì/No |
 
 ---
@@ -41,7 +40,7 @@ UDebate è una piattaforma web per il dibattito universitario. Gli utenti posson
 - **Frontend** — Blade, Tailwind CSS, Alpine.js
 - **Database** — MySQL
 - **Build tool** — Vite
-- **Containerizzazione** — Docker & Docker Compose
+- **Containerizzazione** — Docker
 
 ---
 
@@ -140,16 +139,7 @@ UDebate/
 ---
 
 ## 🔌 API Routes principali
-
-| Metodo | Route | Descrizione |
-|---|---|---|
-| `GET` | `/dashboard` | Dashboard principale |
-| `POST` | `/debates` | Crea nuovo dibattito |
-| `PATCH` | `/debates/{id}` | Modifica dibattito |
-| `DELETE` | `/debates/{id}` | Elimina dibattito |
-| `POST` | `/debates/{id}/like` | Toggle like |
-| `POST` | `/debates/{id}/comments` | Aggiungi commento |
-
+- Groq - llama-3.1-8b-instant
 ---
 
 ## 👤 Autori
